@@ -7,6 +7,8 @@ function getUserRepos(user) {
         responce.json().then(function(data) {
             displayRepos(data, user);
             console.log(data)
+           }).catch(function(error){
+               alert("Unable to connect to GitHub at this time. Please check back later!");
            });
        }
        else {
@@ -18,7 +20,8 @@ function getUserRepos(user) {
 
 function displayRepos(repos, searchTerm) {
     if (repos.lenth === 0) {
-        $("#repos-container").text("No Repositories Found For User!")
+        $("#repos-container").text("No Repositories Found For User!");
+        return;
     }
     $("#repos-container").text("");
     $("#repo-search-term").text(searchTerm);
@@ -26,8 +29,9 @@ function displayRepos(repos, searchTerm) {
     for (var i = 0; i < repos.length; i++) {
         var repoName = repos[i].owner.login + "/" + repos[i].name;
 
-        var divItem = document.createElement("div");
+        var divItem = document.createElement("a");
         divItem.classList = "list-item flex-row justify-space-between align-center"
+        divItem.setAttribute("href", "./single-repo.html?repo="+ repoName);
 
         var spanItem = document.createElement("span");
         spanItem.textContent = repoName;
